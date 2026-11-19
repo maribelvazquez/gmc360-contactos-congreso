@@ -10,9 +10,11 @@
       "whatsapp": "525532398931",
       "linkedin": "https://www.linkedin.com/in/j-miguel-hern%C3%A1ndez-perea-98318362",
       "rol": "Negocios · GMC360",
-      "frase": "Leo a los clásicos y escucho de todo, de una cumbia a Beethoven. Me gusta conocer a la gente.",
-      "platicar": "Ventas, negocios y lo que a ti te interesa.",
-      "ayudo": "Aterrizar tus metas para cerrar el año y encontrar dónde podemos apoyarte."
+      "frase": "Me encantaría conocerte y que cuentes con un aliado para llevar tu cumplimiento en PLD/FT al siguiente nivel.",
+      "platicar": "Cualquier tema: me considero un buen conversador y sé escuchar.",
+      "ayudo": "Saber por dónde empezar y cuál de nuestras soluciones te sirve para conocer, resolver y guiarte en el mundo del PLD/FT. Platícame tu duda y te acerco con nuestros expertos.",
+      "pregunta": "¿Cuál es la duda que hoy más te frena en tu cumplimiento de PLD/FT?",
+      "personal": "Leo a los clásicos y, en música, soy un tipo random: escucho de todo, de una cumbia a Beethoven."
     },
     {
       "slug": "samara",
@@ -22,9 +24,11 @@
       "whatsapp": "525618801836",
       "linkedin": "https://www.linkedin.com/in/samara-barrios-flores-45604423b",
       "rol": "Dirección · 360educa",
-      "frase": "Me interesa que tu equipo aprenda de verdad, y que lo disfrute.",
-      "platicar": "Cómo capacitar a tu gente sin aburrirla.",
-      "ayudo": "Decidir qué necesita reforzar tu equipo este año, en prevención de lavado y actividades vulnerables."
+      "frase": "Detrás de cada empresa hay personas que necesitan soluciones, no sólo respuestas técnicas.",
+      "platicar": "Liderazgo y cómo construir equipos, el propósito, trabajar en uno mismo, la disciplina y cómo los pequeños hábitos transforman la vida.",
+      "ayudo": "Escuchar tus retos, entender qué necesitas y construir contigo una capacitación a la medida en PLD/FT que de verdad te funcione, aunque no sepas por dónde empezar o el presupuesto sea un reto.",
+      "pregunta": "¿Tu capacitación anual se parece a la realidad de tu empresa, o es la misma de siempre?",
+      "personal": "Ir al gimnasio, nadar, aprender a tocar el piano, conocer lugares nuevos, y pasar tiempo con mi familia y con mi perrito."
     },
     {
       "slug": "amanda",
@@ -45,10 +49,12 @@
       "correo": "arely@gmc360.com.mx",
       "whatsapp": "525565635255",
       "linkedin": "https://www.linkedin.com/in/arely-scanda-vel%C3%A1zquez-gonz%C3%A1lez-471a38262",
-      "rol": "Contenido y seguimiento · 360educa",
-      "frase": "Me gusta que cada curso llegue hasta el final.",
-      "platicar": "Cómo quieres que aprenda tu equipo.",
-      "ayudo": "Armar el contenido de tu capacitación y darle seguimiento hasta que todos terminen."
+      "rol": "Estrategia educativa · 360educa",
+      "frase": "Aprender no tiene por qué ser complicado ni aburrido.",
+      "platicar": "Educación y cómo aprende el cerebro: neuroplasticidad, desarrollo personal y por qué hacemos lo que hacemos.",
+      "ayudo": "Convertir temas técnicos en cursos claros y prácticos, y armarte una ruta de aprendizaje si no sabes por dónde empezar, incluso para prepararte a tu certificación ante la CNBV.",
+      "pregunta": "¿Tu equipo memoriza el curso o realmente lo entiende?",
+      "personal": "Leer novelas que me atrapen (soy fan de Flores en el ático), ir al gimnasio, escuchar música y aprender cosas nuevas por pura curiosidad."
     },
     {
       "slug": "claudia",
@@ -69,10 +75,12 @@
       "correo": "yadira@gmc360.com.mx",
       "whatsapp": "524422048343",
       "linkedin": "https://www.linkedin.com/in/yadiragmc360",
-      "rol": "Auditoría, consultoría y riesgos",
-      "frase": "Prefiero el orden de hoy al susto de mañana.",
-      "platicar": "Cómo está tu información y qué te piden tus reguladores.",
-      "ayudo": "Preparar tu auditoría, tus manuales y tu administración de riesgos con tiempo."
+      "rol": "Subdirectora · GMC360",
+      "frase": "El conocimiento importa, pero saber compartirlo y generar confianza importa igual.",
+      "platicar": "Casos interesantes de auditoría y cómo interpretar y aplicar la regulación. Y fuera del trabajo, videojuegos, películas y series.",
+      "ayudo": "Analizar tu situación, encontrar una solución práctica y explicarte cómo implementarla, para que no sólo tengas una respuesta, sino que entiendas qué hacer y por qué. Una parte clave de mi trabajo es la auditoría: revisar qué hace tu empresa y ayudarte a mejorar tus procesos.",
+      "pregunta": "¿Tu empresa cumple por cumplir, o entiende por qué lo hace?",
+      "personal": "Ir al cine, ver series, leer, la música, cocinar (menos seguido de lo que quisiera), mis amigos y mi familia. Y amo a los perros."
     },
     {
       "slug": "vanessa",
