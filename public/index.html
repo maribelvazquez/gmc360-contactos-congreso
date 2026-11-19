@@ -10,7 +10,11 @@
 <meta name="apple-mobile-web-app-title" content="GMC360">
 <meta name="robots" content="noindex,nofollow">
 <title>GMC360 · Contactos del congreso</title>
-<link rel="manifest" href="/manifest.webmanifest" id="lnk-manifest">
+<script>
+// El manifest debe llevar la llave desde que carga la página (iPhone lo lee al "Agregar a inicio").
+(function(){var k=null;try{k=new URLSearchParams(location.search).get('k')||localStorage.getItem('gmc_key')}catch(e){}
+document.write('<link rel="manifest" href="'+(k?'/api/manifest?k='+encodeURIComponent(k):'/manifest.webmanifest')+'">');})();
+</script>
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="icon" href="/icon-192.png">
 <link rel="stylesheet" href="/estilo.css">
@@ -224,7 +228,6 @@ function arrancar(){
   var p=new URLSearchParams(location.search);
   if(p.get('k')) lsSet(LS_KEY,p.get('k'));
   KEY=lsGet(LS_KEY); USER=lsGet(LS_USER);
-  if(KEY){ var m=$('lnk-manifest'); m.href='/api/manifest?k='+encodeURIComponent(KEY); }
   if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function(){});
   fetch('/equipo.json').then(function(r){return r.json()}).then(function(j){EQ=j}).catch(function(){
     // sin red: usar la copia guardada por el service worker
