@@ -46,17 +46,19 @@ function pintar(eq,libros){
   h+='<div class="foto" id="foto">'+inicial+'</div>';
   h+='<h1>'+esc(p.nombre)+'</h1><div class="rol">'+esc(p.rol)+'</div>';
   h+='<p class="frase">“'+esc(p.frase)+'”</p>';
-  h+='<div class="bloque"><h3>Platícame de</h3><p>'+esc(p.platicar)+'</p></div>';
+  if(p.pregunta) h+='<div class="pregunta"><span>Una pregunta para ti</span>'+esc(p.pregunta)+'</div>';
   h+='<div class="bloque"><h3>Te puedo ayudar a</h3><p>'+esc(p.ayudo)+'</p></div>';
+  if(p.platicar) h+='<div class="bloque"><h3>Conmigo puedes platicar de</h3><p>'+esc(p.platicar)+'</p></div>';
   if(p.personal) h+='<div class="bloque"><h3>Fuera del trabajo</h3><p>'+esc(p.personal)+'</p></div>';
-  h+='<div class="acc" style="justify-content:center;margin:16px 0 4px">';
+  h+='<div class="bloque"><h3>Mis datos</h3><div class="acc" style="margin-top:8px">';
   if(wa) h+='<a href="'+wa+'" target="_blank" rel="noopener">WhatsApp</a>';
+  if(p.correo) h+='<a class="g" href="mailto:'+esc(p.correo)+'">Correo</a>';
   if(p.linkedin) h+='<a class="g" href="'+esc(p.linkedin)+'" target="_blank" rel="noopener">LinkedIn</a>';
-  h+='<a class="g" href="#" id="guardar">Guardar mi contacto</a></div>';
+  h+='<a class="g" href="#" id="guardar">Guardar mi contacto en tu celular</a></div></div>';
 
   h+='<div class="bloque" id="caja-form" style="margin-top:18px">';
-  h+='<h3 style="font-size:15px;text-transform:none;letter-spacing:0;color:#1b1b1e">Quiero que me contacten</h3>';
-  h+='<p style="font-size:14px;color:#5d6563;margin-bottom:6px">Déjame tus datos y te mando un regalo: uno de nuestros libros.</p>';
+  h+='<h3 style="font-size:16px;text-transform:none;letter-spacing:0;color:#1b1b1e">Déjame tus datos y yo te contacto</h3>';
+  h+='<p style="font-size:14px;color:#5d6563;margin-bottom:6px">A cambio te mando un regalo: uno de nuestros libros.</p>';
   h+='<form id="form" autocomplete="on">';
   h+='<input type="text" name="sitio" class="hp" tabindex="-1" autocomplete="off">';
   h+='<label class="l" for="r-nombre">Nombre *</label><input type="text" id="r-nombre" name="name" autocomplete="name" required>';
