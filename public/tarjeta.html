@@ -48,8 +48,6 @@ function pintar(eq,libros){
   h+='<p class="frase">“'+esc(p.frase)+'”</p>';
   if(p.pregunta) h+='<div class="pregunta"><span>Una pregunta para ti</span>'+esc(p.pregunta)+'</div>';
   h+='<div class="bloque"><h3>Te puedo ayudar a</h3><p>'+esc(p.ayudo)+'</p></div>';
-  if(p.platicar) h+='<div class="bloque"><h3>Conmigo puedes platicar de</h3><p>'+esc(p.platicar)+'</p></div>';
-  if(p.personal) h+='<div class="bloque"><h3>Fuera del trabajo</h3><p>'+esc(p.personal)+'</p></div>';
   h+='<div class="bloque"><h3>Mis datos</h3><div class="acc" style="margin-top:8px">';
   if(wa) h+='<a href="'+wa+'" target="_blank" rel="noopener">WhatsApp</a>';
   if(p.correo) h+='<a class="g" href="mailto:'+esc(p.correo)+'">Correo</a>';
