@@ -404,6 +404,7 @@ function pintarLeads(){
     if(l.whatsapp) det+='<div><b>WhatsApp:</b> '+esc(l.whatsapp)+'</div>';
     if((l.pasos||[]).length) det+='<div><b>Próximo paso:</b> '+esc(l.pasos.join(', '))+'</div>';
     if(l.nota) det+='<div><b>Nota:</b> '+esc(l.nota)+'</div>';
+    if(l.tieneFoto) det+='<div class="fotobox" data-fid="'+esc(l.id)+'"><button class="g" data-foto="'+esc(l.id)+'" style="margin-top:6px">📷 Ver foto de la tarjeta</button></div>';
     det+='<div style="color:#6d7573;margin-top:4px">Capturó '+esc(nombreDe(l.capturadoPor))+' · '+esc(hoyStr(l.creadoEn))+'</div>';
     var acc='';
     if(wa) acc+='<a href="'+waLink(l)+'" target="_blank" rel="noopener">WhatsApp</a><a class="g" href="tel:+'+wa+'">Llamar</a>';
@@ -416,6 +417,8 @@ function pintarLeads(){
   }).join('');
 }
 $('lista-leads').addEventListener('click',function(ev){
+  var fb=ev.target.closest('[data-foto]');
+  if(fb){ verFoto(fb.getAttribute('data-foto'),fb); return }
   var e=ev.target.closest('[data-edit]');
   if(e){ editar(e.getAttribute('data-edit')); return }
   var d=ev.target.closest('[data-del]');
@@ -428,6 +431,15 @@ $('filtros').addEventListener('click',function(ev){
   var c=ev.target.closest('.chip'); if(!c) return; FILTRO=c.getAttribute('data-f');
   Array.prototype.forEach.call($('filtros').children,function(x){x.classList.toggle('on',x===c)}); pintarLeads();
 });
+function verFoto(id,btn){
+  var box=btn.parentNode; btn.textContent='Cargando…';
+  var local=COLA.filter(function(c){return c.id===id&&c.foto})[0];
+  function poner(src){ box.innerHTML='<img src="'+src+'" alt="Foto de la tarjeta" style="width:100%;border-radius:10px;margin-top:8px;display:block">'; }
+  if(local){ poner(local.foto); return }
+  api('foto?id='+encodeURIComponent(id)).then(function(r){ if(!r.ok) throw 0; return r.blob() })
+    .then(function(b){ poner(URL.createObjectURL(b)) })
+    .catch(function(){ btn.textContent='No se pudo cargar la foto, intenta de nuevo' });
+}
 function eliminar(id){
   var l=LEADS.filter(function(x){return x.id===id})[0]; if(!l) return;
   if(!navigator.onLine){ toast('Para eliminar necesitas internet.'); return }
