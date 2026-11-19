@@ -12,7 +12,10 @@
 </head>
 <body>
 <a id="volver" href="/" style="display:none;position:fixed;top:10px;left:10px;z-index:99;background:#1b1b1e;color:#fff;padding:10px 16px;border-radius:999px;font:600 15px system-ui,sans-serif;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.3)">&larr; Volver a la app</a>
-<script>try{if(localStorage.getItem('gmc_key')){var v=document.getElementById('volver');v.style.display='block';v.href='/?k='+encodeURIComponent(localStorage.getItem('gmc_key'))}}catch(e){}</script>
+<script>(function(){var k=null;try{k=localStorage.getItem('gmc_key')}catch(e){}
+var desdeApp=false;try{desdeApp=(document.referrer&&new URL(document.referrer).origin===location.origin&&!/\/t\//.test(document.referrer))||/[?&]app=1/.test(location.search)}catch(e){}
+if(k||desdeApp){var v=document.getElementById('volver');v.style.display='block';v.href='/'+(k?'?k='+encodeURIComponent(k):'');
+v.onclick=function(e){if(desdeApp&&history.length>1){e.preventDefault();history.back()}}}})();</script>
 <div id="app"></div>
 
 <script>

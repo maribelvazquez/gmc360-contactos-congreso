@@ -244,7 +244,7 @@ function entrar(){
   $('btn-user').textContent=nombreDe(USER);
   armarChips();
   var yo=EQ&&EQ.equipo.filter(function(e){return e.correo===USER})[0];
-  if(yo){ $('miqr-img').src='/qr/'+yo.slug+'.png'; $('miqr-nombre').textContent=yo.nombre; $('miqr-tarjeta').href='/t/'+yo.slug; }
+  if(yo){ $('miqr-img').src='/qr/'+yo.slug+'.png'; $('miqr-nombre').textContent=yo.nombre; $('miqr-tarjeta').href='/t/'+yo.slug+'?app=1'; }
   $('f-pais').value=lsGet(LS_PAIS)||'México';
   irA('capturar');
   Promise.all([DB.all('leads'),DB.all('cola')]).then(function(r){
