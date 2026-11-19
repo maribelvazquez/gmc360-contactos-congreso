@@ -133,6 +133,7 @@ document.write('<link rel="manifest" href="'+(k?'/api/manifest?k='+encodeURIComp
     <div class="card"><div class="h2">Por país</div><div id="g-pais"></div></div>
     <button class="btn sec" id="btn-csv">Descargar contactos (CSV para Excel o Clientify)</button>
     <p style="font-size:13px;color:#5d6563;margin-top:10px">Abre en Excel y también se puede importar a Clientify. Incluye quién capturó, tema, temperatura y notas.</p>
+    <button class="btn lin" id="btn-actualizar" style="margin-top:10px">🔄 Actualizar la app</button>
     <button class="btn lin" id="btn-instalar" style="margin-top:10px;display:none">Instalar la app en este celular</button>
   </section>
 </main>
@@ -380,7 +381,7 @@ document.addEventListener('visibilitychange',function(){ if(!document.hidden&&KE
 function waLink(l){
   var yo=nombreDe(USER), primer=(l.nombre||'').split(' ')[0];
   var tema=(l.temas&&l.temas[0])||''; var extra=FRASE_TEMA[tema]||'me dio gusto conocerte y quedo atento a cómo podemos apoyarte.';
-  var msg='Hola '+primer+', soy '+yo+' de GMC360. Qué gusto platicar contigo en el congreso; '+extra+' ¿Te parece si agendamos una llamada esta semana?';
+  var msg='Hola '+primer+', soy '+yo+' de GMC360. Qué gusto platicar contigo en el congreso; '+extra+' ¿Te parece si agendamos una llamada esta semana? Te comparto también nuestra Biblioteca 360: https://drive.google.com/drive/folders/1kdjLFxk5UbFuZ-fQEvwx8tt78qAAZI7N';
   return 'https://wa.me/'+waNum(l.whatsapp)+'?text='+encodeURIComponent(msg);
 }
 var tempEmoji={caliente:'🔥',tibio:'🙂',frio:'❄️'};
@@ -496,6 +497,13 @@ $('btn-csv').addEventListener('click',function(){
   var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='contactos-congreso-gmc360.csv'; document.body.appendChild(a); a.click(); setTimeout(function(){a.remove()},500);
 });
 
+$('btn-actualizar').addEventListener('click',function(){
+  toast('Actualizando…',4000);
+  var fin=function(){ location.reload() };
+  Promise.resolve().then(function(){ return (window.caches&&caches.keys)?caches.keys().then(function(ks){return Promise.all(ks.map(function(k){return caches.delete(k)}))}):0 })
+    .then(function(){ return (navigator.serviceWorker&&navigator.serviceWorker.getRegistrations)?navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.update()}))}):0 })
+    .then(fin,fin);
+});
 /* ================= instalar ================= */
 var promptInstalar=null;
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault(); promptInstalar=e; $('btn-instalar').style.display='block'});
