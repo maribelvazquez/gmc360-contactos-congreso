@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1b1b1e">
+<title>GMC360</title>
+<meta property="og:title" content="GMC360 · Tarjeta">
+<link rel="icon" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/estilo.css">
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+(function(){
+'use strict';
+var $=function(id){return document.getElementById(id)};
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+var TEMAS=['Auditoría PLD','Capacitación 360educa','IMPACTO360','Podcast','Consultoría y manuales','Actividades vulnerables','Riesgos 360RISK®','LEX-GMC'];
+var slug=(location.pathname.split('/').filter(Boolean).pop()||'').toLowerCase();
+
+Promise.all([
+  fetch('/equipo.json').then(function(r){return r.json()}),
+  fetch('/libros.json').then(function(r){return r.json()}).catch(function(){return []})
+]).then(function(r){ pintar(r[0],r[1]) }).catch(function(){
+  $('app').innerHTML='<div style="padding:30px;text-align:center">No se pudo cargar la tarjeta. Revisa tu conexión e intenta otra vez.</div>';
+});
+
+function vcard(p){
+  var tel=p.whatsapp?('+'+p.whatsapp):'';
+  var l=['BEGIN:VCARD','VERSION:3.0','FN:'+p.nombre,'ORG:GMC360','TITLE:'+p.rol,tel?'TEL;TYPE=CELL:'+tel:'',p.correo?'EMAIL:'+p.correo:'',p.linkedin?'URL:'+p.linkedin:'','END:VCARD'].filter(Boolean);
+  return l.join('\r\n');
+}
+
+function pintar(eq,libros){
+  var p=eq.equipo.filter(function(e){return e.slug===slug})[0];
+  if(!p){ $('app').innerHTML='<div class="hero"><div class="marca">GMC360</div><p class="linea">'+esc(eq.linea_superior)+'</p></div>'; return }
+  document.title=p.nombre+' · GMC360';
+  var inicial=esc(p.corto.charAt(0));
+  var wa=p.whatsapp?'https://wa.me/'+p.whatsapp:'';
+  var h='';
+  h+='<div class="hero"><div class="marca">GMC360</div><p class="linea">'+esc(eq.linea_superior)+'</p></div>';
+  h+='<div class="perfil">';
+  h+='<div class="foto" id="foto">'+inicial+'</div>';
+  h+='<h1>'+esc(p.nombre)+'</h1><div class="rol">'+esc(p.rol)+'</div>';
+  h+='<p class="frase">“'+esc(p.frase)+'”</p>';
+  h+='<div class="bloque"><h3>Platícame de</h3><p>'+esc(p.platicar)+'</p></div>';
+  h+='<div class="bloque"><h3>Te puedo ayudar a</h3><p>'+esc(p.ayudo)+'</p></div>';
+  if(p.personal) h+='<div class="bloque"><h3>Fuera del trabajo</h3><p>'+esc(p.personal)+'</p></div>';
+  h+='<div class="acc" style="justify-content:center;margin:16px 0 4px">';
+  if(wa) h+='<a href="'+wa+'" target="_blank" rel="noopener">WhatsApp</a>';
+  if(p.linkedin) h+='<a class="g" href="'+esc(p.linkedin)+'" target="_blank" rel="noopener">LinkedIn</a>';
+  h+='<a class="g" href="#" id="guardar">Guardar mi contacto</a></div>';
+
+  h+='<div class="bloque" id="caja-form" style="margin-top:18px">';
+  h+='<h3 style="font-size:15px;text-transform:none;letter-spacing:0;color:#1b1b1e">Quiero que me contacten</h3>';
+  h+='<p style="font-size:14px;color:#5d6563;margin-bottom:6px">Déjame tus datos y te mando un regalo: uno de nuestros libros.</p>';
+  h+='<form id="form" autocomplete="on">';
+  h+='<input type="text" name="sitio" class="hp" tabindex="-1" autocomplete="off">';
+  h+='<label class="l" for="r-nombre">Nombre *</label><input type="text" id="r-nombre" name="name" autocomplete="name" required>';
+  h+='<div class="fila"><div><label class="l" for="r-empresa">Empresa</label><input type="text" id="r-empresa" autocomplete="organization"></div>';
+  h+='<div><label class="l" for="r-pais">País</label><input type="text" id="r-pais" value="México" autocomplete="country-name"></div></div>';
+  h+='<div class="fila"><div><label class="l" for="r-correo">Correo</label><input type="email" id="r-correo" autocomplete="email" inputmode="email"></div>';
+  h+='<div><label class="l" for="r-wa">WhatsApp</label><input type="tel" id="r-wa" autocomplete="tel" inputmode="tel"></div></div>';
+  h+='<label class="l">¿Qué te interesa?</label><div class="chips" id="r-temas">'+TEMAS.map(function(t){return '<div class="chip" data-v="'+esc(t)+'">'+esc(t)+'</div>'}).join('')+'</div>';
+  h+='<label class="chk"><input type="checkbox" id="r-consent"><span>Acepto que GMC360 me contacte con información de sus servicios. Consulta el <a href="/aviso.html" target="_blank">aviso de privacidad</a>.</span></label>';
+  h+='<p id="r-err" style="color:#b3261e;font-size:14px;display:none;margin:10px 0 0"></p>';
+  h+='<button class="btn" type="submit" id="r-btn" style="margin-top:14px">Enviar</button>';
+  h+='</form></div>';
+  h+='<p class="pie">'+esc(eq.linea_inferior)+'</p>';
+  h+='</div>';
+  $('app').innerHTML=h;
+
+  // foto (si existe)
+  var img=new Image(); img.onload=function(){ $('foto').innerHTML=''; $('foto').appendChild(img) };
+  img.alt=''; img.src='/fotos/'+p.slug+'.jpg';
+
+  $('guardar').addEventListener('click',function(e){
+    e.preventDefault();
+    var b=new Blob([vcard(p)],{type:'text/vcard'}); var a=document.createElement('a');
+    a.href=URL.createObjectURL(b); a.download=p.nombre.replace(/\s+/g,'_')+'.vcf'; document.body.appendChild(a); a.click(); setTimeout(function(){a.remove()},500);
+  });
+  $('r-temas').addEventListener('click',function(ev){var c=ev.target.closest('.chip'); if(c) c.classList.toggle('on')});
+
+  $('form').addEventListener('submit',function(ev){
+    ev.preventDefault();
+    var err=$('r-err'); err.style.display='none';
+    var nombre=$('r-nombre').value.trim(), correo=$('r-correo').value.trim(), tel=$('r-wa').value.trim();
+    function falla(t){err.textContent=t; err.style.display='block'}
+    if(!nombre) return falla('Escribe tu nombre.');
+    if(!correo&&!tel) return falla('Déjanos un correo o un WhatsApp para poder contactarte.');
+    if(!$('r-consent').checked) return falla('Necesitamos tu autorización para contactarte.');
+    var temas=Array.prototype.map.call($('r-temas').querySelectorAll('.chip.on'),function(c){return c.getAttribute('data-v')});
+    var btn=$('r-btn'); btn.disabled=true; btn.textContent='Enviando…';
+    fetch('/api/registro',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({
+      slug:p.slug,nombre:nombre,empresa:$('r-empresa').value.trim(),pais:$('r-pais').value.trim(),correo:correo,whatsapp:tel,temas:temas,
+      consentimiento:true,sitio:document.querySelector('.hp').value
+    })}).then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j}})}).then(function(x){
+      if(!x.ok||!x.j.ok) throw new Error('x');
+      gracias(p,libros,temas,x.j.id,eq);
+    }).catch(function(){ btn.disabled=false; btn.textContent='Enviar'; falla('No se pudo enviar. Revisa tu conexión e intenta de nuevo.') });
+  });
+}
+
+function gracias(p,libros,temas,id,eq){
+  var h='<div class="gracias"><h2>¡Gracias! 🙌</h2><p>'+esc(p.corto)+' te escribirá pronto.</p>';
+  if(libros&&libros.length){
+    var orden=libros.slice().sort(function(a,b){var ai=temas.indexOf(a.tema)>=0?0:1, bi=temas.indexOf(b.tema)>=0?0:1; return ai-bi});
+    h+='<p style="margin-top:14px"><b>Tu regalo:</b></p>';
+    orden.forEach(function(b){ h+='<a class="libro" href="/api/libro?f='+encodeURIComponent(b.archivo)+'&id='+encodeURIComponent(id||'')+'">📘 '+esc(b.titulo)+'<small>'+esc(b.descripcion||'Descargar')+'</small></a>'; });
+  }
+  h+='<p class="pie">'+esc(eq.linea_inferior)+'</p></div>';
+  $('caja-form').innerHTML=h;
+  $('caja-form').scrollIntoView({behavior:'smooth',block:'center'});
+}
+})();
+</script>
+</body>
+</html>

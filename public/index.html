@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1b1b1e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="GMC360">
+<meta name="robots" content="noindex,nofollow">
+<title>GMC360 · Contactos del congreso</title>
+<link rel="manifest" href="/manifest.webmanifest" id="lnk-manifest">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" href="/icon-192.png">
+<link rel="stylesheet" href="/estilo.css">
+</head>
+<body>
+
+<header class="top" id="top" style="display:none">
+  <img src="/insignia.png" alt="">
+  <div class="t">GMC360<small>Congreso · Monterrey</small></div>
+  <div class="sp"></div>
+  <div class="estado" id="estado"><span class="dot"></span><span id="estado-txt">Listo</span></div>
+  <button class="chip-user" id="btn-user">…</button>
+</header>
+
+<main>
+  <!-- sin llave -->
+  <section class="pantalla" id="p-sinllave">
+    <div class="centro">
+      <h2>Falta tu liga de acceso</h2>
+      <p>Abre esta app desde la liga que te mandó Maribel o Samara (la que trae la llave al final). Sólo se hace una vez por celular.</p>
+    </div>
+  </section>
+
+  <!-- quién eres -->
+  <section class="pantalla" id="p-quien">
+    <h2 style="margin:6px 0 4px">¿Quién eres?</h2>
+    <p style="margin:0 0 14px;color:#5d6563">Elige tu nombre. El celular lo recuerda, y cada contacto queda a tu nombre.</p>
+    <div id="lista-quien"></div>
+  </section>
+
+  <!-- capturar -->
+  <section class="pantalla" id="p-capturar">
+    <form id="form" autocomplete="off">
+      <div class="card">
+        <label class="l" for="f-nombre">Nombre *</label>
+        <input type="text" id="f-nombre" placeholder="Nombre y apellido" autocapitalize="words" required>
+        <div class="fila">
+          <div><label class="l" for="f-empresa">Empresa</label><input type="text" id="f-empresa" autocapitalize="words"></div>
+          <div><label class="l" for="f-cargo">Cargo</label><input type="text" id="f-cargo" autocapitalize="sentences"></div>
+        </div>
+        <label class="l" for="f-pais">País</label>
+        <input type="text" id="f-pais" list="paises" autocapitalize="words">
+        <datalist id="paises">
+          <option>México</option><option>Colombia</option><option>Perú</option><option>Chile</option><option>Argentina</option>
+          <option>Panamá</option><option>Costa Rica</option><option>Guatemala</option><option>Ecuador</option><option>Bolivia</option>
+          <option>República Dominicana</option><option>El Salvador</option><option>Honduras</option><option>Nicaragua</option>
+          <option>Paraguay</option><option>Uruguay</option><option>Venezuela</option><option>Brasil</option><option>España</option><option>Estados Unidos</option>
+        </datalist>
+        <div class="fila">
+          <div><label class="l" for="f-wa">WhatsApp</label><input type="tel" id="f-wa" inputmode="tel" placeholder="10 dígitos"></div>
+          <div><label class="l" for="f-correo">Correo</label><input type="email" id="f-correo" inputmode="email" autocapitalize="none"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <label class="l">¿Qué le interesó?</label>
+        <div class="chips" id="c-temas"></div>
+        <label class="l">Temperatura</label>
+        <div class="temp" id="c-temp">
+          <div class="chip" data-v="caliente">🔥 Caliente</div>
+          <div class="chip on" data-v="tibio">🙂 Tibio</div>
+          <div class="chip" data-v="frio">❄️ Frío</div>
+        </div>
+        <label class="l">Próximo paso</label>
+        <div class="chips" id="c-pasos"></div>
+      </div>
+
+      <div class="card">
+        <label class="l" for="f-nota">Nota (puedes dictarla con el micrófono del teclado)</label>
+        <textarea id="f-nota" placeholder="De qué platicaron, qué necesita, cuándo buscarlo…"></textarea>
+        <label class="l">Foto de tarjeta o gafete (opcional)</label>
+        <input type="file" id="f-foto" accept="image/*" capture="environment" style="font-size:14px">
+        <img id="foto-prev" class="foto-prev" alt="">
+        <label class="chk"><input type="checkbox" id="f-consent"><span>Me autorizó que GMC360 lo contacte para darle seguimiento.</span></label>
+      </div>
+
+      <button class="btn" type="submit" id="btn-guardar">Guardar contacto</button>
+      <button class="btn lin" type="button" id="btn-cancelar-edicion" style="display:none;margin-top:10px">Cancelar edición</button>
+    </form>
+  </section>
+
+  <!-- contactos -->
+  <section class="pantalla" id="p-contactos">
+    <input type="search" id="buscar" placeholder="Buscar por nombre, empresa, país…" style="margin-bottom:10px">
+    <div class="filtros" id="filtros">
+      <div class="chip on" data-f="todos">Todos</div>
+      <div class="chip" data-f="mios">Los míos</div>
+      <div class="chip" data-f="calientes">🔥 Calientes</div>
+      <div class="chip" data-f="qr">Por QR</div>
+    </div>
+    <div id="lista-leads"></div>
+  </section>
+
+  <!-- mi QR -->
+  <section class="pantalla" id="p-miqr">
+    <div class="card" style="text-align:center">
+      <div class="h2" id="miqr-nombre">Mi QR</div>
+      <p style="margin:0 0 10px;color:#5d6563;font-size:14px">Que lo escaneen con la cámara: ven tu tarjeta, se registran solos y reciben su libro. Todo queda a tu nombre.</p>
+      <img id="miqr-img" alt="Mi código QR" style="width:100%;max-width:360px;border-radius:12px;border:1px solid var(--linea)">
+      <p style="margin:12px 0 0;font-size:13px;color:#5d6563">Sube el brillo de la pantalla para que lo lean más rápido.</p>
+      <a id="miqr-tarjeta" class="btn lin" style="margin-top:12px;text-decoration:none" target="_blank" rel="noopener">Ver mi tarjeta</a>
+    </div>
+  </section>
+
+  <!-- panel -->
+  <section class="pantalla" id="p-panel">
+    <div class="tiles">
+      <div class="tile"><b id="t-total">0</b><span>Contactos</span></div>
+      <div class="tile"><b id="t-calientes">0</b><span>Calientes</span></div>
+      <div class="tile"><b id="t-hoy">0</b><span>Hoy</span></div>
+      <div class="tile"><b id="t-libros">0</b><span>Libros bajados</span></div>
+    </div>
+    <div class="card"><div class="h2">Por persona</div><div id="g-persona"></div></div>
+    <div class="card"><div class="h2">Por tema de interés</div><div id="g-tema"></div></div>
+    <div class="card"><div class="h2">Por país</div><div id="g-pais"></div></div>
+    <button class="btn sec" id="btn-csv">Descargar contactos (CSV para Excel o Clientify)</button>
+    <p style="font-size:13px;color:#5d6563;margin-top:10px">Abre en Excel y también se puede importar a Clientify. Incluye quién capturó, tema, temperatura y notas.</p>
+    <button class="btn lin" id="btn-instalar" style="margin-top:10px;display:none">Instalar la app en este celular</button>
+  </section>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<nav id="nav" style="display:none">
+  <button data-p="capturar" class="on"><span class="i">➕</span>Capturar</button>
+  <button data-p="contactos"><span class="i">👥</span>Contactos</button>
+  <button data-p="miqr"><span class="i">📲</span>Mi QR</button>
+  <button data-p="panel"><span class="i">📊</span>Panel</button>
+</nav>
+
+<script>
+(function(){
+'use strict';
+
+/* ================= constantes ================= */
+var TEMAS = ['Auditoría PLD','Capacitación 360educa','IMPACTO360','Podcast','Consultoría y manuales','Actividades vulnerables','Riesgos 360RISK®','LEX-GMC'];
+var PASOS = ['Mandar cotización','Agendar llamada','Enviar libro','Invitar a IMPACTO360','Invitar al podcast','Solo saludar'];
+var FRASE_TEMA = {
+  'Auditoría PLD':'te cuento cómo podemos apoyarte con tu auditoría en prevención de lavado de dinero.',
+  'Capacitación 360educa':'te cuento cómo armamos capacitaciones a la medida para tu equipo con 360educa.',
+  'IMPACTO360':'te cuento de IMPACTO360 y cómo sumarte.',
+  'Podcast':'te comparto nuestro podcast, creo que te va a servir.',
+  'Consultoría y manuales':'te cuento cómo podemos apoyarte con consultoría y manuales de cumplimiento.',
+  'Actividades vulnerables':'te cuento cómo podemos apoyarte con tus obligaciones en actividades vulnerables.',
+  'Riesgos 360RISK®':'te cuento cómo podemos apoyarte con la administración de riesgos con nuestra metodología 360RISK®.',
+  'LEX-GMC':'te cuento cómo podemos apoyarte con estrategia legal con LEX-GMC.'
+};
+var LS_KEY='gmc_key', LS_USER='gmc_user', LS_PAIS='gmc_pais';
+
+/* ================= utilidades ================= */
+var $ = function(id){return document.getElementById(id)};
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function uuid(){ if(crypto.randomUUID) return crypto.randomUUID(); return 'x'+Date.now().toString(36)+Math.random().toString(36).slice(2,10)+Math.random().toString(36).slice(2,6) }
+function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+function soloDigitos(s){return String(s||'').replace(/\D/g,'')}
+function waNum(s){var d=soloDigitos(s); if(!d) return ''; if(d.length===10) return '52'+d; if(d.length===12&&d.indexOf('52')===0) return d; if(d.length===13&&d.indexOf('521')===0) return '52'+d.slice(3); return d}
+function hoyStr(iso){return new Date(iso).toLocaleDateString('es-MX')}
+var toastT; function toast(html,ms){var t=$('toast'); t.innerHTML=html; t.className='toast on'; clearTimeout(toastT); toastT=setTimeout(function(){t.className='toast'},ms||3500)}
+
+/* ================= almacenamiento local (IndexedDB) ================= */
+var DB=(function(){
+  var p;
+  function open(){ return p||(p=new Promise(function(res,rej){
+    var r=indexedDB.open('gmc360',1);
+    r.onupgradeneeded=function(){var d=r.result; d.createObjectStore('leads',{keyPath:'id'}); d.createObjectStore('cola',{keyPath:'id'})};
+    r.onsuccess=function(){res(r.result)}; r.onerror=function(){rej(r.error)};
+  }))}
+  function tx(s,m,f){return open().then(function(d){return new Promise(function(res,rej){
+    var t=d.transaction(s,m), st=t.objectStore(s), rq=f(st);
+    t.oncomplete=function(){res(rq&&rq.result)}; t.onerror=function(){rej(t.error)}; t.onabort=function(){rej(t.error)};
+  })})}
+  return {
+    put:function(s,v){return tx(s,'readwrite',function(st){return st.put(v)})},
+    del:function(s,k){return tx(s,'readwrite',function(st){return st.delete(k)})},
+    all:function(s){return tx(s,'readonly',function(st){return st.getAll()})}
+  };
+})();
+
+/* ================= estado ================= */
+var KEY=null, USER=null, EQ=null, LEADS=[], COLA=[], DESCARGAS=0, FILTRO='todos', EDITANDO=null, FOTO=null, sincronizando=false;
+
+function nombreDe(correo){
+  if(!EQ) return correo;
+  for(var i=0;i<EQ.equipo.length;i++) if(EQ.equipo[i].correo===correo) return EQ.equipo[i].corto;
+  return correo;
+}
+function api(ruta,opts){
+  opts=opts||{}; opts.headers=Object.assign({'x-gmc-key':KEY,'x-gmc-user':USER||''},opts.headers||{});
+  return fetch('/api/'+ruta,opts);
+}
+
+/* ================= arranque ================= */
+function arrancar(){
+  var p=new URLSearchParams(location.search);
+  if(p.get('k')) lsSet(LS_KEY,p.get('k'));
+  KEY=lsGet(LS_KEY); USER=lsGet(LS_USER);
+  if(KEY){ var m=$('lnk-manifest'); m.href='/api/manifest?k='+encodeURIComponent(KEY); }
+  if('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function(){});
+  fetch('/equipo.json').then(function(r){return r.json()}).then(function(j){EQ=j}).catch(function(){
+    // sin red: usar la copia guardada por el service worker
+  }).then(function(){
+    if(!KEY){ mostrar('sinllave'); return }
+    if(!USER || !EQ || !EQ.equipo.some(function(e){return e.correo===USER})){ pintarQuien(); mostrar('quien'); return }
+    entrar();
+  });
+}
+function entrar(){
+  $('top').style.display='flex'; $('nav').style.display='flex';
+  $('btn-user').textContent=nombreDe(USER);
+  armarChips();
+  var yo=EQ&&EQ.equipo.filter(function(e){return e.correo===USER})[0];
+  if(yo){ $('miqr-img').src='/qr/'+yo.slug+'.png'; $('miqr-nombre').textContent=yo.nombre; $('miqr-tarjeta').href='/t/'+yo.slug; }
+  $('f-pais').value=lsGet(LS_PAIS)||'México';
+  Promise.all([DB.all('leads'),DB.all('cola')]).then(function(r){
+    LEADS=r[0]||[]; COLA=r[1]||[]; ordenar(); pintar(); estadoUI();
+    irA('capturar'); sincronizar();
+  });
+}
+function mostrar(nombre){
+  ['sinllave','quien','capturar','contactos','miqr','panel'].forEach(function(n){$('p-'+n).className='pantalla'+(n===nombre?' on':'')});
+}
+function irA(nombre){
+  mostrar(nombre);
+  Array.prototype.forEach.call(document.querySelectorAll('#nav button'),function(b){b.className=b.getAttribute('data-p')===nombre?'on':''});
+  if(nombre==='contactos') pintarLeads(); if(nombre==='panel') pintarPanel();
+  window.scrollTo(0,0);
+}
+function pintarQuien(){
+  var h=''; EQ&&EQ.equipo.forEach(function(e){
+    h+='<button class="persona" data-c="'+esc(e.correo)+'"><div class="av">'+esc(e.corto.charAt(0))+'</div><div><b>'+esc(e.nombre)+'</b><small>'+esc(e.correo)+'</small></div></button>';
+  });
+  $('lista-quien').innerHTML=h||'<p>No pude cargar la lista del equipo. Revisa tu internet y recarga.</p>';
+}
+$('lista-quien').addEventListener('click',function(ev){
+  var b=ev.target.closest('.persona'); if(!b) return;
+  USER=b.getAttribute('data-c'); lsSet(LS_USER,USER); entrar();
+});
+$('btn-user').addEventListener('click',function(){ if(confirm('¿Cambiar de persona en este celular?')){ lsSet(LS_USER,''); USER=null; $('top').style.display='none'; $('nav').style.display='none'; pintarQuien(); mostrar('quien'); }});
+$('nav').addEventListener('click',function(ev){var b=ev.target.closest('button'); if(b) irA(b.getAttribute('data-p'))});
+
+/* ================= captura ================= */
+function armarChips(){
+  $('c-temas').innerHTML=TEMAS.map(function(t){return '<div class="chip" data-v="'+esc(t)+'">'+esc(t)+'</div>'}).join('');
+  $('c-pasos').innerHTML=PASOS.map(function(t){return '<div class="chip" data-v="'+esc(t)+'">'+esc(t)+'</div>'}).join('');
+}
+['c-temas','c-pasos'].forEach(function(id){$(id).addEventListener('click',function(ev){var c=ev.target.closest('.chip'); if(c) c.classList.toggle('on')})});
+$('c-temp').addEventListener('click',function(ev){var c=ev.target.closest('.chip'); if(!c) return; Array.prototype.forEach.call($('c-temp').children,function(x){x.classList.remove('on')}); c.classList.add('on')});
+function seleccion(id){return Array.prototype.map.call($(id).querySelectorAll('.chip.on'),function(c){return c.getAttribute('data-v')})}
+function setChips(id,vals){Array.prototype.forEach.call($(id).querySelectorAll('.chip'),function(c){c.classList.toggle('on',(vals||[]).indexOf(c.getAttribute('data-v'))>=0)})}
+
+$('f-foto').addEventListener('change',function(){
+  var f=this.files&&this.files[0]; if(!f) return;
+  var img=new Image(), url=URL.createObjectURL(f);
+  img.onload=function(){
+    var max=1000, w=img.width, h=img.height, s=Math.min(1,max/Math.max(w,h));
+    var c=document.createElement('canvas'); c.width=Math.round(w*s); c.height=Math.round(h*s);
+    c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+    FOTO=c.toDataURL('image/jpeg',0.72); URL.revokeObjectURL(url);
+    var pv=$('foto-prev'); pv.src=FOTO; pv.style.display='block';
+  };
+  img.src=url;
+});
+
+function limpiarForm(){
+  ['f-nombre','f-empresa','f-cargo','f-wa','f-correo','f-nota'].forEach(function(i){$(i).value=''});
+  $('f-pais').value=lsGet(LS_PAIS)||'México';
+  setChips('c-temas',[]); setChips('c-pasos',[]);
+  Array.prototype.forEach.call($('c-temp').children,function(x){x.classList.toggle('on',x.getAttribute('data-v')==='tibio')});
+  $('f-consent').checked=false; $('f-foto').value=''; FOTO=null; $('foto-prev').style.display='none';
+  EDITANDO=null; $('btn-guardar').textContent='Guardar contacto'; $('btn-cancelar-edicion').style.display='none';
+}
+$('btn-cancelar-edicion').addEventListener('click',function(){limpiarForm()});
+
+$('form').addEventListener('submit',function(ev){
+  ev.preventDefault();
+  var nombre=$('f-nombre').value.trim();
+  if(!nombre){ toast('Falta el nombre'); $('f-nombre').focus(); return }
+  if(!$('f-consent').checked){ toast('Confirma que autorizó el contacto'); return }
+  var previo=EDITANDO? LEADS.filter(function(l){return l.id===EDITANDO})[0] : null;
+  var lead={
+    id: EDITANDO||uuid(),
+    creadoEn: previo?previo.creadoEn:new Date().toISOString(),
+    capturadoPor: previo?previo.capturadoPor:USER,
+    origen: previo?previo.origen:'equipo',
+    nombre:nombre, empresa:$('f-empresa').value.trim(), cargo:$('f-cargo').value.trim(), pais:$('f-pais').value.trim(),
+    correo:$('f-correo').value.trim(), whatsapp:$('f-wa').value.trim(),
+    temas:seleccion('c-temas'), pasos:seleccion('c-pasos'),
+    temperatura:(seleccion('c-temp')[0]||'tibio'), nota:$('f-nota').value.trim(),
+    consentimiento:true, tieneFoto: !!(FOTO || (previo&&previo.tieneFoto))
+  };
+  lsSet(LS_PAIS, lead.pais||'México');
+  var enCola=Object.assign({},lead); if(FOTO) enCola.foto=FOTO;
+  var sinContacto=!lead.correo && !lead.whatsapp, wa=waNum(lead.whatsapp), editado=!!EDITANDO;
+  DB.put('leads',lead).then(function(){return DB.put('cola',enCola)}).then(function(){
+    var i=LEADS.findIndex(function(l){return l.id===lead.id}); if(i>=0) LEADS[i]=lead; else LEADS.unshift(lead);
+    COLA=COLA.filter(function(c){return c.id!==lead.id}); COLA.push(enCola);
+    ordenar(); estadoUI(); limpiarForm();
+    var msg=(editado?'Actualizado ✓ ':'Guardado ✓ ')+esc(lead.nombre)+(sinContacto?' · sin correo ni WhatsApp':'');
+    toast('<span>'+msg+'</span>'+(wa?'<a href="'+waLink(lead)+'" target="_blank" rel="noopener">WhatsApp</a>':''),6000);
+    window.scrollTo(0,0); sincronizar();
+    if(editado) irA('contactos');
+  }).catch(function(){ toast('No se pudo guardar en el celular. Intenta otra vez.') });
+});
+
+/* ================= sincronización ================= */
+function ordenar(){LEADS.sort(function(a,b){return String(b.creadoEn).localeCompare(String(a.creadoEn))})}
+function estadoUI(){
+  var d=document.querySelector('#estado .dot'), t=$('estado-txt');
+  if(!navigator.onLine){ d.className='dot off'; t.textContent=COLA.length?('Sin red · '+COLA.length+' por subir'):'Sin red'; }
+  else if(COLA.length){ d.className='dot pend'; t.textContent=COLA.length+' por subir'; }
+  else { d.className='dot'; t.textContent='Todo guardado'; }
+}
+function sincronizar(){
+  if(sincronizando||!KEY||!USER) return; if(!navigator.onLine){estadoUI();return}
+  sincronizando=true;
+  var subir=COLA.slice();
+  var cadena=Promise.resolve();
+  subir.forEach(function(item){
+    cadena=cadena.then(function(){
+      return api('leads',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({leads:[item]})})
+        .then(function(r){ if(r.status===401){ toast('La llave de acceso ya no es válida. Pide tu liga otra vez.'); throw new Error('llave') }
+          if(!r.ok) throw new Error('http'+r.status);
+          return DB.del('cola',item.id).then(function(){COLA=COLA.filter(function(c){return c.id!==item.id}); estadoUI()});
+        });
+    });
+  });
+  cadena.then(function(){ return api('leads') }).then(function(r){ if(!r.ok) throw new Error('pull'); return r.json() }).then(function(j){
+    var enCola={}; COLA.forEach(function(c){enCola[c.id]=true});
+    var mapa={}; (j.leads||[]).forEach(function(l){mapa[l.id]=l});
+    LEADS.forEach(function(l){ if(enCola[l.id]) mapa[l.id]=l });
+    LEADS=Object.keys(mapa).map(function(k){return mapa[k]}); DESCARGAS=j.descargas||0; ordenar();
+    return Promise.all(LEADS.map(function(l){return DB.put('leads',l)}));
+  }).catch(function(){}).then(function(){
+    sincronizando=false; estadoUI(); var on=document.querySelector('.pantalla.on');
+    if(on&&on.id==='p-contactos') pintarLeads(); if(on&&on.id==='p-panel') pintarPanel();
+  });
+}
+window.addEventListener('online',function(){estadoUI(); sincronizar()});
+window.addEventListener('offline',estadoUI);
+setInterval(function(){ if(KEY&&USER) sincronizar() },20000);
+document.addEventListener('visibilitychange',function(){ if(!document.hidden&&KEY&&USER) sincronizar() });
+
+/* ================= contactos ================= */
+function waLink(l){
+  var yo=nombreDe(USER), primer=(l.nombre||'').split(' ')[0];
+  var tema=(l.temas&&l.temas[0])||''; var extra=FRASE_TEMA[tema]||'me dio gusto conocerte y quedo atento a cómo podemos apoyarte.';
+  var msg='Hola '+primer+', soy '+yo+' de GMC360. Qué gusto platicar contigo en el congreso; '+extra+' ¿Te parece si agendamos una llamada esta semana?';
+  return 'https://wa.me/'+waNum(l.whatsapp)+'?text='+encodeURIComponent(msg);
+}
+var tempEmoji={caliente:'🔥',tibio:'🙂',frio:'❄️'};
+function pintarLeads(){
+  var q=($('buscar').value||'').toLowerCase().trim();
+  var lista=LEADS.filter(function(l){
+    if(FILTRO==='mios'&&l.capturadoPor!==USER) return false;
+    if(FILTRO==='calientes'&&l.temperatura!=='caliente') return false;
+    if(FILTRO==='qr'&&l.origen!=='qr') return false;
+    if(q){ var blob=[l.nombre,l.empresa,l.cargo,l.pais,l.correo,(l.temas||[]).join(' ')].join(' ').toLowerCase(); if(blob.indexOf(q)<0) return false }
+    return true;
+  });
+  if(!lista.length){ $('lista-leads').innerHTML='<div class="vacio">Aún no hay contactos aquí.</div>'; return }
+  var pend={}; COLA.forEach(function(c){pend[c.id]=true});
+  $('lista-leads').innerHTML=lista.map(function(l){
+    var tags=(l.temas||[]).map(function(t){return '<span class="tag">'+esc(t)+'</span>'}).join('')+(l.origen==='qr'?'<span class="tag g">Se registró por QR</span>':'')+(pend[l.id]?'<span class="tag g">Por subir</span>':'');
+    var wa=waNum(l.whatsapp);
+    var det='';
+    if(l.cargo) det+='<div><b>Cargo:</b> '+esc(l.cargo)+'</div>';
+    if(l.correo) det+='<div><b>Correo:</b> '+esc(l.correo)+'</div>';
+    if(l.whatsapp) det+='<div><b>WhatsApp:</b> '+esc(l.whatsapp)+'</div>';
+    if((l.pasos||[]).length) det+='<div><b>Próximo paso:</b> '+esc(l.pasos.join(', '))+'</div>';
+    if(l.nota) det+='<div><b>Nota:</b> '+esc(l.nota)+'</div>';
+    det+='<div style="color:#6d7573;margin-top:4px">Capturó '+esc(nombreDe(l.capturadoPor))+' · '+esc(hoyStr(l.creadoEn))+'</div>';
+    var acc='';
+    if(wa) acc+='<a href="'+waLink(l)+'" target="_blank" rel="noopener">WhatsApp</a><a class="g" href="tel:+'+wa+'">Llamar</a>';
+    if(l.correo) acc+='<a class="g" href="mailto:'+esc(l.correo)+'">Correo</a>';
+    acc+='<button class="g" data-edit="'+esc(l.id)+'">Editar</button>';
+    if(l.capturadoPor===USER||USER==='mvazquez@gmc360.com.mx') acc+='<button class="g" data-del="'+esc(l.id)+'">Eliminar</button>';
+    return '<div class="lead" data-id="'+esc(l.id)+'"><div class="n">'+(tempEmoji[l.temperatura]||'')+' '+esc(l.nombre)+'</div>'+
+      '<div class="s">'+esc([l.empresa,l.pais].filter(Boolean).join(' · ')||'Sin empresa')+' · '+esc(nombreDe(l.capturadoPor))+'</div>'+
+      '<div class="tags">'+tags+'</div><div class="det">'+det+'<div class="acc">'+acc+'</div></div></div>';
+  }).join('');
+}
+$('lista-leads').addEventListener('click',function(ev){
+  var e=ev.target.closest('[data-edit]');
+  if(e){ editar(e.getAttribute('data-edit')); return }
+  var d=ev.target.closest('[data-del]');
+  if(d){ eliminar(d.getAttribute('data-del')); return }
+  if(ev.target.closest('a')) return;
+  var c=ev.target.closest('.lead'); if(c) c.classList.toggle('open');
+});
+$('buscar').addEventListener('input',pintarLeads);
+$('filtros').addEventListener('click',function(ev){
+  var c=ev.target.closest('.chip'); if(!c) return; FILTRO=c.getAttribute('data-f');
+  Array.prototype.forEach.call($('filtros').children,function(x){x.classList.toggle('on',x===c)}); pintarLeads();
+});
+function eliminar(id){
+  var l=LEADS.filter(function(x){return x.id===id})[0]; if(!l) return;
+  if(!navigator.onLine){ toast('Para eliminar necesitas internet.'); return }
+  if(!confirm('¿Eliminar a '+l.nombre+'? No se puede deshacer.')) return;
+  api('leads?id='+encodeURIComponent(id),{method:'DELETE'}).then(function(r){
+    if(!r.ok) throw new Error('x');
+    LEADS=LEADS.filter(function(x){return x.id!==id}); COLA=COLA.filter(function(c){return c.id!==id});
+    return Promise.all([DB.del('leads',id),DB.del('cola',id)]);
+  }).then(function(){ pintarLeads(); estadoUI(); toast('Eliminado') }).catch(function(){ toast('No se pudo eliminar. Intenta otra vez.') });
+}
+function editar(id){
+  var l=LEADS.filter(function(x){return x.id===id})[0]; if(!l) return;
+  irA('capturar'); EDITANDO=id;
+  $('f-nombre').value=l.nombre||''; $('f-empresa').value=l.empresa||''; $('f-cargo').value=l.cargo||'';
+  $('f-pais').value=l.pais||''; $('f-wa').value=l.whatsapp||''; $('f-correo').value=l.correo||''; $('f-nota').value=l.nota||'';
+  setChips('c-temas',l.temas); setChips('c-pasos',l.pasos);
+  Array.prototype.forEach.call($('c-temp').children,function(x){x.classList.toggle('on',x.getAttribute('data-v')===l.temperatura)});
+  $('f-consent').checked=l.consentimiento===true; FOTO=null; $('foto-prev').style.display='none';
+  $('btn-guardar').textContent='Guardar cambios'; $('btn-cancelar-edicion').style.display='block';
+}
+
+/* ================= panel ================= */
+function barras(id,pares){
+  var max=Math.max.apply(null,pares.map(function(p){return p[1]}).concat([1]));
+  $(id).innerHTML=pares.length?pares.map(function(p){
+    return '<div class="barra"><div class="nom">'+esc(p[0])+'</div><div class="b"><i style="width:'+Math.round(p[1]/max*100)+'%"></i></div><div class="v">'+p[1]+'</div></div>';
+  }).join(''):'<div class="vacio" style="padding:8px">Sin datos todavía</div>';
+}
+function contar(fn){var m={}; LEADS.forEach(function(l){var ks=fn(l); (Array.isArray(ks)?ks:[ks]).forEach(function(k){ if(k) m[k]=(m[k]||0)+1 })}); return Object.keys(m).map(function(k){return [k,m[k]]}).sort(function(a,b){return b[1]-a[1]})}
+function pintarPanel(){
+  var hoy=new Date().toDateString();
+  $('t-total').textContent=LEADS.length;
+  $('t-calientes').textContent=LEADS.filter(function(l){return l.temperatura==='caliente'}).length;
+  $('t-hoy').textContent=LEADS.filter(function(l){return new Date(l.creadoEn).toDateString()===hoy}).length;
+  $('t-libros').textContent=DESCARGAS;
+  barras('g-persona',contar(function(l){return nombreDe(l.capturadoPor)}));
+  barras('g-tema',contar(function(l){return l.temas||[]}));
+  barras('g-pais',contar(function(l){return l.pais}).slice(0,8));
+}
+function csvCelda(v){v=String(v==null?'':v).replace(/"/g,'""'); return '"'+v+'"'}
+$('btn-csv').addEventListener('click',function(){
+  var cab=['Nombre','Empresa','Cargo','País','Correo','WhatsApp','Temas de interés','Temperatura','Próximo paso','Nota','Capturó','Origen','Autorizó contacto','Fecha'];
+  var filas=LEADS.map(function(l){return [l.nombre,l.empresa,l.cargo,l.pais,l.correo,l.whatsapp,(l.temas||[]).join('; '),l.temperatura,(l.pasos||[]).join('; '),l.nota,nombreDe(l.capturadoPor),l.origen==='qr'?'QR':'Equipo',l.consentimiento?'Sí':'No',l.creadoEn].map(csvCelda).join(',')});
+  var blob=new Blob(['﻿'+cab.map(csvCelda).join(',')+'\n'+filas.join('\n')],{type:'text/csv;charset=utf-8'});
+  var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='contactos-congreso-gmc360.csv'; document.body.appendChild(a); a.click(); setTimeout(function(){a.remove()},500);
+});
+
+/* ================= instalar ================= */
+var promptInstalar=null;
+window.addEventListener('beforeinstallprompt',function(e){e.preventDefault(); promptInstalar=e; $('btn-instalar').style.display='block'});
+$('btn-instalar').addEventListener('click',function(){ if(promptInstalar){promptInstalar.prompt(); promptInstalar=null; $('btn-instalar').style.display='none'} });
+if(/iphone|ipad/i.test(navigator.userAgent) && !window.navigator.standalone){ var b=$('btn-instalar'); b.style.display='block'; b.textContent='Cómo instalar en iPhone'; b.onclick=function(){alert('En Safari: toca el botón Compartir (cuadro con flecha) y elige “Agregar a pantalla de inicio”.')} }
+
+arrancar();
+})();
+</script>
+</body>
+</html>
