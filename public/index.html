@@ -173,20 +173,36 @@ var toastT; function toast(html,ms){var t=$('toast'); t.innerHTML=html; t.classN
 
 /* ================= almacenamiento local (IndexedDB) ================= */
 var DB=(function(){
-  var p;
-  function open(){ return p||(p=new Promise(function(res,rej){
-    var r=indexedDB.open('gmc360',1);
-    r.onupgradeneeded=function(){var d=r.result; d.createObjectStore('leads',{keyPath:'id'}); d.createObjectStore('cola',{keyPath:'id'})};
-    r.onsuccess=function(){res(r.result)}; r.onerror=function(){rej(r.error)};
-  }))}
-  function tx(s,m,f){return open().then(function(d){return new Promise(function(res,rej){
-    var t=d.transaction(s,m), st=t.objectStore(s), rq=f(st);
-    t.oncomplete=function(){res(rq&&rq.result)}; t.onerror=function(){rej(t.error)}; t.onabort=function(){rej(t.error)};
-  })})}
+  // IndexedDB si el navegador lo permite; si no (navegadores dentro de apps, modo privado), memoria.
+  var mem={leads:{},cola:{}}, usarMem=false, p=null;
+  function abrir(){
+    if(usarMem) return Promise.reject(new Error('mem'));
+    if(p) return p;
+    p=new Promise(function(res,rej){
+      var t=setTimeout(function(){rej(new Error('timeout'))},2500);
+      try{
+        var r=indexedDB.open('gmc360',1);
+        r.onupgradeneeded=function(){var d=r.result; d.createObjectStore('leads',{keyPath:'id'}); d.createObjectStore('cola',{keyPath:'id'})};
+        r.onsuccess=function(){clearTimeout(t); res(r.result)};
+        r.onerror=function(){clearTimeout(t); rej(r.error||new Error('idb'))};
+        r.onblocked=function(){clearTimeout(t); rej(new Error('blocked'))};
+      }catch(e){clearTimeout(t); rej(e)}
+    });
+    return p;
+  }
+  function tx(s,m,f){
+    return abrir().then(function(d){return new Promise(function(res,rej){
+      var t=d.transaction(s,m), st=t.objectStore(s), rq=f(st);
+      t.oncomplete=function(){res(rq&&rq.result)}; t.onerror=function(){rej(t.error)}; t.onabort=function(){rej(t.error)};
+    })});
+  }
+  function conRespaldo(idb,memFn){
+    return idb().catch(function(){ usarMem=true; return memFn() });
+  }
   return {
-    put:function(s,v){return tx(s,'readwrite',function(st){return st.put(v)})},
-    del:function(s,k){return tx(s,'readwrite',function(st){return st.delete(k)})},
-    all:function(s){return tx(s,'readonly',function(st){return st.getAll()})}
+    put:function(s,v){return conRespaldo(function(){return tx(s,'readwrite',function(st){return st.put(v)})},function(){mem[s][v.id]=v});},
+    del:function(s,k){return conRespaldo(function(){return tx(s,'readwrite',function(st){return st.delete(k)})},function(){delete mem[s][k]});},
+    all:function(s){return conRespaldo(function(){return tx(s,'readonly',function(st){return st.getAll()})},function(){return Object.keys(mem[s]).map(function(k){return mem[s][k]})});}
   };
 })();
 
@@ -225,9 +241,11 @@ function entrar(){
   var yo=EQ&&EQ.equipo.filter(function(e){return e.correo===USER})[0];
   if(yo){ $('miqr-img').src='/qr/'+yo.slug+'.png'; $('miqr-nombre').textContent=yo.nombre; $('miqr-tarjeta').href='/t/'+yo.slug; }
   $('f-pais').value=lsGet(LS_PAIS)||'México';
+  irA('capturar');
   Promise.all([DB.all('leads'),DB.all('cola')]).then(function(r){
-    LEADS=r[0]||[]; COLA=r[1]||[]; ordenar(); pintar(); estadoUI();
-    irA('capturar'); sincronizar();
+    LEADS=r[0]||[]; COLA=r[1]||[];
+  }).catch(function(){ LEADS=[]; COLA=[] }).then(function(){
+    ordenar(); estadoUI(); sincronizar();
   });
 }
 function mostrar(nombre){
