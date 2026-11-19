@@ -387,6 +387,7 @@ var tempEmoji={caliente:'🔥',tibio:'🙂',frio:'❄️'};
 function pintarLeads(){
   var q=($('buscar').value||'').toLowerCase().trim();
   var lista=LEADS.filter(function(l){
+    if(OCULTOS[l.id]) return false;
     if(FILTRO==='mios'&&l.capturadoPor!==USER) return false;
     if(FILTRO==='calientes'&&l.temperatura!=='caliente') return false;
     if(FILTRO==='qr'&&l.origen!=='qr') return false;
@@ -440,16 +441,24 @@ function verFoto(id,btn){
     .then(function(b){ poner(URL.createObjectURL(b)) })
     .catch(function(){ btn.textContent='No se pudo cargar la foto, intenta de nuevo' });
 }
+var OCULTOS={}, TEMPDEL={};
+function borrarYa(id){
+  clearTimeout(TEMPDEL[id]); delete TEMPDEL[id];
+  return api('leads?id='+encodeURIComponent(id),{method:'DELETE',keepalive:true}).then(function(r){
+    if(!r.ok) throw new Error('x');
+    LEADS=LEADS.filter(function(x){return x.id!==id}); COLA=COLA.filter(function(c){return c.id!==id}); delete OCULTOS[id];
+    return Promise.all([DB.del('leads',id),DB.del('cola',id)]);
+  }).then(function(){ pintarLeads(); estadoUI() }).catch(function(){ delete OCULTOS[id]; pintarLeads(); toast('No se pudo eliminar. Intenta otra vez.') });
+}
 function eliminar(id){
   var l=LEADS.filter(function(x){return x.id===id})[0]; if(!l) return;
   if(!navigator.onLine){ toast('Para eliminar necesitas internet.'); return }
-  if(!confirm('¿Eliminar a '+l.nombre+'? No se puede deshacer.')) return;
-  api('leads?id='+encodeURIComponent(id),{method:'DELETE'}).then(function(r){
-    if(!r.ok) throw new Error('x');
-    LEADS=LEADS.filter(function(x){return x.id!==id}); COLA=COLA.filter(function(c){return c.id!==id});
-    return Promise.all([DB.del('leads',id),DB.del('cola',id)]);
-  }).then(function(){ pintarLeads(); estadoUI(); toast('Eliminado') }).catch(function(){ toast('No se pudo eliminar. Intenta otra vez.') });
+  OCULTOS[id]=true; pintarLeads();
+  toast('<span>Eliminaste a '+esc(l.nombre)+'</span><a href="#" id="undo-del">Deshacer</a>',8000);
+  $('undo-del').onclick=function(e){ e.preventDefault(); clearTimeout(TEMPDEL[id]); delete TEMPDEL[id]; delete OCULTOS[id]; pintarLeads(); toast('Contacto recuperado') };
+  TEMPDEL[id]=setTimeout(function(){ borrarYa(id) },8500);
 }
+window.addEventListener('pagehide',function(){ Object.keys(TEMPDEL).forEach(function(id){ borrarYa(id) }) });
 function editar(id){
   var l=LEADS.filter(function(x){return x.id===id})[0]; if(!l) return;
   irA('capturar'); EDITANDO=id;
