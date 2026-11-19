@@ -85,8 +85,8 @@ document.write('<link rel="manifest" href="'+(k?'/api/manifest?k='+encodeURIComp
       <div class="card">
         <label class="l" for="f-nota">Nota (puedes dictarla con el micrófono del teclado)</label>
         <textarea id="f-nota" placeholder="De qué platicaron, qué necesita, cuándo buscarlo…"></textarea>
-        <label class="l">Foto de tarjeta o gafete (opcional)</label>
-        <input type="file" id="f-foto" accept="image/*" capture="environment" style="font-size:14px">
+        <label class="l">Foto de tarjeta o gafete (opcional): toma la foto o elige una captura de tu galería</label>
+        <input type="file" id="f-foto" accept="image/*" style="font-size:14px">
         <img id="foto-prev" class="foto-prev" alt="">
         <label class="chk"><input type="checkbox" id="f-consent"><span>Me autorizó que GMC360 lo contacte para darle seguimiento.</span></label>
       </div>
@@ -115,7 +115,7 @@ document.write('<link rel="manifest" href="'+(k?'/api/manifest?k='+encodeURIComp
       <p style="margin:0 0 10px;color:#5d6563;font-size:14px">Que lo escaneen con la cámara: ven tu tarjeta, se registran solos y reciben su libro. Todo queda a tu nombre.</p>
       <img id="miqr-img" alt="Mi código QR" style="width:100%;max-width:360px;border-radius:12px;border:1px solid var(--linea)">
       <p style="margin:12px 0 0;font-size:13px;color:#5d6563">Sube el brillo de la pantalla para que lo lean más rápido.</p>
-      <a id="miqr-tarjeta" class="btn lin" style="margin-top:12px;text-decoration:none" target="_blank" rel="noopener">Ver mi tarjeta</a>
+      <a id="miqr-tarjeta" class="btn lin" style="margin-top:12px;text-decoration:none">Ver mi tarjeta</a>
     </div>
   </section>
 
