@@ -85,8 +85,9 @@ document.write('<link rel="manifest" href="'+(k?'/api/manifest?k='+encodeURIComp
       <div class="card">
         <label class="l" for="f-nota">Nota (puedes dictarla con el micrófono del teclado)</label>
         <textarea id="f-nota" placeholder="De qué platicaron, qué necesita, cuándo buscarlo…"></textarea>
-        <label class="l">Foto de tarjeta o gafete (opcional): toma la foto o elige una captura de tu galería</label>
-        <input type="file" id="f-foto" accept="image/*" style="font-size:14px">
+        <label class="l">Foto de la tarjeta o gafete (opcional)</label>
+        <label class="btn lin" for="f-foto" id="f-foto-btn" style="text-align:center;margin-top:6px">📷 Tomar o elegir foto</label>
+        <input type="file" id="f-foto" accept="image/*" style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden">
         <img id="foto-prev" class="foto-prev" alt="">
         <label class="chk"><input type="checkbox" id="f-consent"><span>Me autorizó que GMC360 lo contacte para darle seguimiento.</span></label>
       </div>
@@ -291,7 +292,7 @@ $('f-foto').addEventListener('change',function(){
     var c=document.createElement('canvas'); c.width=Math.round(w*s); c.height=Math.round(h*s);
     c.getContext('2d').drawImage(img,0,0,c.width,c.height);
     FOTO=c.toDataURL('image/jpeg',0.72); URL.revokeObjectURL(url);
-    var pv=$('foto-prev'); pv.src=FOTO; pv.style.display='block';
+    var pv=$('foto-prev'); pv.src=FOTO; pv.style.display='block'; $('f-foto-btn').textContent='📷 Cambiar foto';
   };
   img.src=url;
 });
@@ -301,7 +302,7 @@ function limpiarForm(){
   $('f-pais').value=lsGet(LS_PAIS)||'México';
   setChips('c-temas',[]); setChips('c-pasos',[]);
   Array.prototype.forEach.call($('c-temp').children,function(x){x.classList.toggle('on',x.getAttribute('data-v')==='tibio')});
-  $('f-consent').checked=false; $('f-foto').value=''; FOTO=null; $('foto-prev').style.display='none';
+  $('f-consent').checked=false; $('f-foto').value=''; $('f-foto-btn').textContent='📷 Tomar o elegir foto'; FOTO=null; $('foto-prev').style.display='none';
   EDITANDO=null; $('btn-guardar').textContent='Guardar contacto'; $('btn-cancelar-edicion').style.display='none';
 }
 $('btn-cancelar-edicion').addEventListener('click',function(){limpiarForm()});
