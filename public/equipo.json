@@ -3,8 +3,11 @@
   "linea_inferior": "Estamos a tus órdenes las 24 horas, los 365 días del año.",
   "equipo": [
     {
-      "slug": "miguel", "nombre": "Miguel Hernández", "corto": "Miguel",
-      "correo": "miguel@gmc360.com.mx", "whatsapp": "525532398931",
+      "slug": "miguel",
+      "nombre": "Miguel Hernández",
+      "corto": "Miguel",
+      "correo": "miguel@gmc360.com.mx",
+      "whatsapp": "525532398931",
       "linkedin": "https://www.linkedin.com/in/j-miguel-hern%C3%A1ndez-perea-98318362",
       "rol": "Negocios · GMC360",
       "frase": "Leo a los clásicos y escucho de todo, de una cumbia a Beethoven. Me gusta conocer a la gente.",
@@ -12,8 +15,11 @@
       "ayudo": "Aterrizar tus metas para cerrar el año y encontrar dónde podemos apoyarte."
     },
     {
-      "slug": "samara", "nombre": "Samara Barrios", "corto": "Samara",
-      "correo": "samara@gmc360.com.mx", "whatsapp": "525618801836",
+      "slug": "samara",
+      "nombre": "Samara Barrios",
+      "corto": "Samara",
+      "correo": "samara@gmc360.com.mx",
+      "whatsapp": "525618801836",
       "linkedin": "https://www.linkedin.com/in/samara-barrios-flores-45604423b",
       "rol": "Dirección · 360educa",
       "frase": "Me interesa que tu equipo aprenda de verdad, y que lo disfrute.",
@@ -21,8 +27,11 @@
       "ayudo": "Decidir qué necesita reforzar tu equipo este año, en prevención de lavado y actividades vulnerables."
     },
     {
-      "slug": "amanda", "nombre": "Amanda", "corto": "Amanda",
-      "correo": "amanda@gmc360.com.mx", "whatsapp": "525527665619",
+      "slug": "amanda",
+      "nombre": "Amanda",
+      "corto": "Amanda",
+      "correo": "amanda@gmc360.com.mx",
+      "whatsapp": "525527665619",
       "linkedin": "https://www.linkedin.com/in/amandaasaad360",
       "rol": "Diseño de cursos · 360educa",
       "frase": "Me gusta que lo complicado se entienda a la primera.",
@@ -30,8 +39,11 @@
       "ayudo": "Diseñar un curso a tu medida, con casos que se parezcan a tu día a día."
     },
     {
-      "slug": "arely", "nombre": "Arely", "corto": "Arely",
-      "correo": "arely@gmc360.com.mx", "whatsapp": "525565635255",
+      "slug": "arely",
+      "nombre": "Arely",
+      "corto": "Arely",
+      "correo": "arely@gmc360.com.mx",
+      "whatsapp": "525565635255",
       "linkedin": "https://www.linkedin.com/in/arely-scanda-vel%C3%A1zquez-gonz%C3%A1lez-471a38262",
       "rol": "Contenido y seguimiento · 360educa",
       "frase": "Me gusta que cada curso llegue hasta el final.",
@@ -39,8 +51,11 @@
       "ayudo": "Armar el contenido de tu capacitación y darle seguimiento hasta que todos terminen."
     },
     {
-      "slug": "claudia", "nombre": "Claudia", "corto": "Claudia",
-      "correo": "claudia@gmc360.com.mx", "whatsapp": "525516969247",
+      "slug": "claudia",
+      "nombre": "Claudia",
+      "corto": "Claudia",
+      "correo": "claudia@gmc360.com.mx",
+      "whatsapp": "525516969247",
       "linkedin": "https://www.linkedin.com/in/claudia-ceja-b62659137",
       "rol": "Auditoría y consultoría",
       "frase": "Para mí, un buen trabajo es el que se cierra bien.",
@@ -48,8 +63,11 @@
       "ayudo": "Que tu auditoría, tu consultoría o tus manuales avancen con orden y lleguen a buen puerto."
     },
     {
-      "slug": "yadira", "nombre": "Yadira", "corto": "Yadira",
-      "correo": "yadira@gmc360.com.mx", "whatsapp": "524422048343",
+      "slug": "yadira",
+      "nombre": "Yadira",
+      "corto": "Yadira",
+      "correo": "yadira@gmc360.com.mx",
+      "whatsapp": "524422048343",
       "linkedin": "https://www.linkedin.com/in/yadiragmc360",
       "rol": "Auditoría, consultoría y riesgos",
       "frase": "Prefiero el orden de hoy al susto de mañana.",
@@ -57,8 +75,11 @@
       "ayudo": "Preparar tu auditoría, tus manuales y tu administración de riesgos con tiempo."
     },
     {
-      "slug": "vanessa", "nombre": "Vanessa Vázquez", "corto": "Vanessa",
-      "correo": "vanessa@gmc360.com.mx", "whatsapp": "525517022090",
+      "slug": "vanessa",
+      "nombre": "Vanessa Vázquez",
+      "corto": "Vanessa",
+      "correo": "vanessa@gmc360.com.mx",
+      "whatsapp": "525517022090",
       "linkedin": "https://www.linkedin.com/in/vanessa-v%C3%A1zquez-menchaca-199225236",
       "rol": "Subdirectora · Grupo 360",
       "frase": "Me encanta poner orden en el caos, simplificar lo complicado y hacer que las cosas sucedan, sin perder el sentido del humor.",
@@ -67,8 +88,11 @@
       "personal": "Viajar, cocinar, leer, hacer ejercicio, descubrir lugares nuevos para comer y disfrutar a mi familia. Apasionada de la moda y la tecnología."
     },
     {
-      "slug": "mariana", "nombre": "Mariana Díaz", "corto": "Mariana",
-      "correo": "mdiaz@gmc360.com.mx", "whatsapp": "525667926015",
+      "slug": "mariana",
+      "nombre": "Mariana Díaz",
+      "corto": "Mariana",
+      "correo": "mdiaz@gmc360.com.mx",
+      "whatsapp": "525667926015",
       "linkedin": "",
       "rol": "Riesgos · GMC360",
       "frase": "Me gusta convertir los riesgos en algo que se pueda medir.",
@@ -76,13 +100,16 @@
       "ayudo": "Construir una metodología de enfoque basado en riesgos y priorizar lo que de verdad importa."
     },
     {
-      "slug": "maribel", "nombre": "Maribel Vázquez", "corto": "Maribel",
-      "correo": "mvazquez@gmc360.com.mx", "whatsapp": "525529028654",
+      "slug": "maribel",
+      "nombre": "Maribel Vázquez",
+      "corto": "Maribel",
+      "correo": "mvazquez@gmc360.com.mx",
+      "whatsapp": "525529028654",
       "linkedin": "https://www.linkedin.com/in/maribelvazquezmenchaca",
       "rol": "Directora General · GMC360",
-      "frase": "Más de 30 años auditando prevención de lavado me enseñaron que el cumplimiento bien hecho protege al negocio.",
-      "platicar": "Cómo hacer que el cumplimiento trabaje a favor de tu empresa.",
-      "ayudo": "Ver tu caso con ojos de auditora y decidir con quién del equipo conviene que sigas."
+      "frase": "Después de más de 600 auditorías aprendí que el cumplimiento bien hecho no frena al negocio: lo protege.",
+      "platicar": "Cómo hacer que el cumplimiento trabaje a favor de tu empresa y qué está mirando hoy el regulador.",
+      "ayudo": "Decirte con claridad cómo está tu cumplimiento y qué sigue, y ponerte con la persona del equipo que mejor te acompañe."
     }
   ]
 }
