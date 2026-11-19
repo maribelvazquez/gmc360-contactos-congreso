@@ -504,6 +504,18 @@ $('btn-actualizar').addEventListener('click',function(){
     .then(function(){ return (navigator.serviceWorker&&navigator.serviceWorker.getRegistrations)?navigator.serviceWorker.getRegistrations().then(function(rs){return Promise.all(rs.map(function(r){return r.update()}))}):0 })
     .then(fin,fin);
 });
+/* auto-actualización: al volver a la app, si hay versión nueva, recarga (sin interrumpir una captura a medias) */
+var VERSION0=null;
+function revisarVersion(){
+  fetch('/?v='+Date.now(),{cache:'no-store'}).then(function(r){return r.text()}).then(function(t){
+    var h=t.length+':'+t.slice(-200);
+    if(VERSION0===null){ VERSION0=h; return }
+    var enCaptura=($('f-nombre')&&$('f-nombre').value.trim()!=='');
+    if(h!==VERSION0&&!enCaptura){ location.reload() }
+  }).catch(function(){});
+}
+revisarVersion();
+document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible') revisarVersion() });
 /* ================= instalar ================= */
 var promptInstalar=null;
 window.addEventListener('beforeinstallprompt',function(e){e.preventDefault(); promptInstalar=e; $('btn-instalar').style.display='block'});

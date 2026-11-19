@@ -1,5 +1,5 @@
 // Service worker: la app abre aunque no haya internet en el congreso.
-const VERSION = 'gmc360-v1';
+const VERSION = 'gmc360-v2';
 const BASE = ['/', '/index.html', '/estilo.css', '/equipo.json', '/libros.json', '/icon-192.png', '/insignia.png', '/tarjeta.html', '/aviso.html'];
 
 self.addEventListener('install', (e) => {
